@@ -113,6 +113,21 @@ public class LinkedList<E> {
         size--;
     }
 
+    public void remove(E e){
+        Node prev = dummyHead;
+        for (int i=0; i<size; i++){
+            prev = prev.next;
+        }
+        Node curNode = prev.next;
+        if(e instanceof Integer){
+            if(e==curNode.e){
+                prev.next = curNode.next;
+                curNode=null;
+            }
+        }
+
+    }
+
     public E removeFirst(){
         E e = get(0);
         remove(0);

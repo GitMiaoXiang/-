@@ -103,6 +103,12 @@ public class Array<E> {
         return ret;
     }
 
+    public void swap(int i, int j){
+        E e = data[i];
+        data[i] = data[j];
+        data[j] = e;
+    }
+
     @Override
     public String toString() {
         StringBuffer stringBuffer = new StringBuffer();
