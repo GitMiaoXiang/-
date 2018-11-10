@@ -16,6 +16,13 @@ public class MaxHeap<E extends Comparable<E>> {
         data = new Array<>();
     }
 
+    public MaxHeap(E[] arr) {
+        data = new Array<>(arr);
+        for (int i = parent(arr.length - 1); i >= 0; i--) {
+            siftDown(i);
+        }
+    }
+
     public int size() {
         return data.getSize();
     }
@@ -82,23 +89,67 @@ public class MaxHeap<E extends Comparable<E>> {
         }
     }
 
+    //拿出最大元素，并替换成元素e
+    public E replace(E e) {
+        E max = findMax();
+        data.set(0, e);
+        siftDown(0);
+        return max;
+    }
+
     public static void main(String[] args) {
-        int n = 1000000;
-        MaxHeap<Integer> maxHeap = new MaxHeap<>();
+//        int n = 1000000;
+//        MaxHeap<Integer> maxHeap = new MaxHeap<>();
+//        Random random = new Random();
+//        for (int i = 0; i < n; i++) {
+//            maxHeap.add(random.nextInt(Integer.MAX_VALUE));
+//        }
+//        int[] arr = new int[n];
+//        for (int i = 0; i < n; i++) {
+//            arr[i] = maxHeap.extractMax();
+//        }
+//        for (int i = 1; i < n; i++) {
+//            if (arr[i - 1] < arr[i]) {
+//                throw new IllegalArgumentException("堆实现有误！！");
+//            }
+//        }
+//        System.out.println("完成");
+        int n = 10000000;
+        Integer[] testData = new Integer[n];
         Random random = new Random();
         for (int i = 0; i < n; i++) {
-            maxHeap.add(random.nextInt(Integer.MAX_VALUE));
+            testData[i] = random.nextInt(Integer.MAX_VALUE);
         }
-        int[] arr = new int[n];
-        for (int i = 0; i < n; i++) {
+        double time1 = testHeap(testData, false);
+        System.out.println(time1);
+
+        double time2 = testHeap(testData, true);
+        System.out.println(time2);
+    }
+
+    public static double testHeap(Integer[] testData, boolean isHeapify) {
+        long startTime = System.nanoTime();
+        MaxHeap<Integer> maxHeap;
+        if (isHeapify) {
+            maxHeap = new MaxHeap<>(testData);
+        } else {
+            maxHeap = new MaxHeap<>();
+            for (int num : testData) {
+                maxHeap.add(num);
+            }
+        }
+        int[] arr = new int[testData.length];
+        for (int i = 0; i < testData.length; i++) {
             arr[i] = maxHeap.extractMax();
         }
-        for (int i = 1; i < n; i++) {
+        for (int i = 1; i < testData.length; i++) {
             if (arr[i - 1] < arr[i]) {
-                throw new IllegalArgumentException("堆实现有误！！");
+                throw new IllegalArgumentException("错误");
             }
         }
         System.out.println("完成");
+        long endTime = System.nanoTime();
+        return (endTime - startTime) / 1000000000.0;
     }
 
 }
